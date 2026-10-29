@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aerial Studio | 드론 항공 촬영</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* ===== 디자인 토큰: 색과 글꼴은 여기서만 바꿉니다 ===== */
+:root{
+  --yellow:#EBCD62; --yellow-bar:#F1CA55; --cream:#FBF3D5;
+  --sky:linear-gradient(100deg,#CEB6A1 0%,#B5AFA8 14%,#6F848D 38%,#2A3B48 66%,#1B2129 100%);
+  --sky-v:linear-gradient(170deg,#CEB6A1 0%,#B5AFA8 20%,#6F848D 48%,#2A3B48 78%,#1B2129 100%);
+  --charcoal:#292B31; --paper:#F8F7F2; --text:#27292A; --muted:#6B6E73; --line:#E4E1D8; --white:#FFFFFF;
+  --serif:'Noto Serif KR',serif; --sans:'Noto Sans KR',sans-serif;
+  --gutter:24px; --sec-pad:120px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--white);font-family:var(--sans);color:var(--text);word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.in{width:min(1200px,100% - var(--gutter)*2);margin:0 auto}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 26px;border-radius:999px;font-weight:700;font-size:16px;white-space:nowrap}
+.pill.sm{height:42px;padding:0 20px;font-size:14px}
+.y{background:var(--yellow);color:#1E1F21}
+.ghost-w{border:1px solid rgba(255,255,255,.55);color:#fff;font-weight:500}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--yellow);display:inline-block;flex:none}
+.logo{font-family:var(--serif);font-weight:700;font-size:25px;letter-spacing:-.01em;color:#1E1F21}
+.num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none}
+.sec-head{display:grid;grid-template-columns:120px 1fr;align-items:start}
+.sec-head .num{margin-top:14px}
+.sec-head p{grid-column:2;margin:18px 0 0;font-size:17px;line-height:1.7;color:var(--muted);max-width:560px}
+.on-dark .sec-head p{color:rgba(255,255,255,.7)}
+h2{font-family:var(--serif);font-weight:600;font-size:52px;line-height:1.2;letter-spacing:-.025em;margin:0}
+.indent{margin-left:120px}
+.note{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+
+/* 헤더 */
+.bar{height:76px;background:var(--white);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 120px;position:relative;z-index:2}
+.bar nav{display:flex;gap:30px;font-size:15px}
+.bar nav a.cur{font-weight:700;box-shadow:inset 0 -2px 0 var(--yellow)}
+.bar .r{display:flex;justify-content:flex-end;align-items:center;gap:22px;font-size:15px}
+.menu-btn{display:none}
+
+/* 히어로 */
+.hero{background:var(--sky);color:#fff;padding:110px 0 0;text-align:center;position:relative;overflow:hidden}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:15px;letter-spacing:.04em;padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:80px;line-height:1.18;letter-spacing:-.03em;margin:30px 0 22px}
+.hero .lead{font-size:18px;line-height:1.7;color:rgba(255,255,255,.86);margin:0 0 40px}
+.hero .ctas{display:flex;justify-content:center;gap:12px}
+.hero .chips{display:flex;justify-content:center;gap:12px;margin-top:56px;flex-wrap:wrap}
+.hero .chips span{display:flex;align-items:center;gap:8px;font-size:14px;padding:9px 16px;border-radius:999px;background:rgba(27,33,41,.28);color:rgba(255,255,255,.92)}
+.hero .chips svg{width:16px;height:16px;stroke:var(--yellow);fill:none;stroke-width:1.8}
+.hero .ridge{display:block;width:100%;height:140px;margin-top:70px}
+.hero .intro{background:transparent;text-align:left;display:grid;grid-template-columns:1fr 520px;gap:40px;padding:56px 0 110px;border-top:1px dotted rgba(255,255,255,.35)}
+.hero .intro h3{font-family:var(--serif);font-weight:600;font-size:32px;margin:0;line-height:1.35}
+.hero .intro p{margin:0;font-size:16px;line-height:1.8;color:rgba(255,255,255,.82)}
+.hero .scroll{position:absolute;right:120px;top:520px;writing-mode:vertical-rl;font-size:12px;letter-spacing:.2em;color:rgba(255,255,255,.6)}
+
+/* 01 서비스 */
+.svc{background:var(--charcoal);color:#fff;padding:var(--sec-pad) 0}
+.svc .num{background:#fff;color:var(--charcoal)}
+.svc .grid{display:grid;grid-template-columns:420px 1fr;gap:56px;margin-top:64px}
+.svc ol{list-style:none;margin:0;padding:0;border-top:1px dotted rgba(255,255,255,.3)}
+.svc li{display:flex;align-items:center;justify-content:space-between;height:68px;border-bottom:1px dotted rgba(255,255,255,.3);font-size:18px;color:rgba(255,255,255,.66);padding:0 16px 0 0}
+.svc li small{font-size:12px;color:rgba(255,255,255,.45);width:40px;display:inline-block}
+.svc li.on{color:#fff;font-weight:700}
+.svc li .arrow{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(255,255,255,.5)}
+.svc li.on .arrow{background:var(--yellow);border-color:var(--yellow);color:#1E1F21}
+.svc .stage{min-height:540px;border-radius:24px;background:var(--sky-v);position:relative;overflow:hidden}
+.svc .stage svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:46%}
+.svc .stage .ph{position:absolute;top:24px;left:24px;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(27,33,41,.45);font-size:13px}
+.svc .card{position:absolute;right:32px;bottom:32px;width:360px;background:#fff;color:var(--text);border-radius:22px;padding:26px;box-shadow:0 20px 40px rgba(0,0,0,.18)}
+.svc .card small{font-size:12px;letter-spacing:.08em;color:var(--muted)}
+.svc .card h4{font-family:var(--serif);font-size:26px;font-weight:600;margin:4px 0 8px}
+.svc .card .d{font-size:14px;line-height:1.65;color:#55585C;margin:0 0 14px}
+.svc .card dl{margin:0}
+.svc .card dl div{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-top:1px solid var(--line);font-size:14px}
+.svc .card dt{color:var(--muted)}
+.svc .card dd{margin:0;text-align:right;font-weight:500}
+.svc .card .link{display:inline-block;margin-top:14px;font-size:14px;font-weight:700;border-bottom:1px solid var(--text)}
+
+/* 02 강점 */
+.why{background:var(--white);padding:var(--sec-pad) 0}
+.why .num{background:var(--charcoal);color:#fff}
+.why .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:64px}
+.why .c{background:var(--paper);border-radius:22px;padding:30px;min-height:320px;display:flex;flex-direction:column;justify-content:space-between}
+.why .c .top{display:flex;justify-content:space-between;align-items:center}
+.why .c .tag{background:#fff;border-radius:999px;padding:6px 14px;font-size:12px;letter-spacing:.08em;color:var(--muted)}
+.why .c svg{width:40px;height:40px;stroke:var(--text);fill:none;stroke-width:1.5}
+.why .c h4{font-family:var(--serif);font-size:26px;font-weight:600;margin:0 0 12px}
+.why .c p{margin:0;font-size:15px;line-height:1.7;color:#55585C}
+.why .c.hi{background:var(--yellow-bar)}
+.why .c.hi .tag{background:var(--cream);color:#4A4436}
+.why .c.hi p{color:#3D3829}
+
+/* 03 포트폴리오 */
+.pf{background:var(--white);padding:0 0 var(--sec-pad)}
+.pf .wrap{border-top:1px solid var(--line);padding-top:var(--sec-pad)}
+.pf .top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.pf .more{font-size:15px;font-weight:700;border-bottom:1px solid var(--text);padding-bottom:3px;white-space:nowrap}
+.pf .filter{display:flex;gap:8px;margin-top:48px}
+.pf .filter span{height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);display:flex;align-items:center;font-size:14px;color:var(--muted)}
+.pf .filter span.cur{background:var(--charcoal);border-color:var(--charcoal);color:#fff;font-weight:500}
+.pf .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:24px}
+.pf .thumb{aspect-ratio:16/9;border-radius:20px;background:var(--sky-v);position:relative;overflow:hidden}
+.pf .thumb svg{position:absolute;left:0;bottom:0;width:100%;height:55%}
+.pf .thumb .play{position:absolute;left:18px;bottom:18px;width:46px;height:46px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:13px;color:#1E1F21}
+.pf .thumb .ph{position:absolute;top:16px;left:18px;font-size:12px;color:rgba(255,255,255,.88)}
+.pf .thumb .len{position:absolute;right:16px;bottom:18px;font-size:12px;padding:4px 10px;border-radius:999px;background:rgba(27,33,41,.55);color:#fff}
+.pf .meta{padding:16px 4px 0}
+.pf .meta small{font-size:13px;color:var(--muted)}
+.pf .meta b{display:block;font-family:var(--serif);font-size:20px;font-weight:600;margin-top:4px}
+
+/* 04 진행 과정 */
+.proc{background:var(--charcoal);color:#fff;padding:var(--sec-pad) 0}
+.proc .num{background:#fff;color:var(--charcoal)}
+.proc ol{list-style:none;margin-top:64px;margin-bottom:0;margin-right:0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.proc li{border-top:1px dotted rgba(255,255,255,.35);padding-top:22px}
+.proc li .n{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;font-size:12px;margin-bottom:18px}
+.proc li.on .n{background:var(--yellow);border-color:var(--yellow);color:#1E1F21;font-weight:700}
+.proc li b{display:block;font-family:var(--serif);font-size:19px;font-weight:600;margin-bottom:8px}
+.proc li p{margin:0;font-size:14px;line-height:1.65;color:rgba(255,255,255,.7)}
+.proc .foot-note{margin-top:48px;padding:18px 22px;border-radius:16px;background:rgba(255,255,255,.06);font-size:14px;line-height:1.6;color:rgba(255,255,255,.75);display:flex;gap:10px;align-items:center}
+
+/* 05 FAQ */
+.faq{background:var(--paper);padding:var(--sec-pad) 0}
+.faq .num{background:var(--charcoal);color:#fff}
+.faq .list{margin-top:56px;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:26px 4px;font-size:19px;font-weight:500;cursor:pointer}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .q{display:flex;gap:18px;align-items:baseline}
+.faq summary .q i{font-style:normal;font-family:var(--serif);font-weight:700;color:#B49A3C}
+.faq summary .pm{width:32px;height:32px;border-radius:50%;border:1px solid #CFCCC3;display:flex;align-items:center;justify-content:center;flex:none;font-size:16px}
+.faq details[open] .pm{background:var(--yellow);border-color:var(--yellow)}
+.faq details p{margin:-6px 0 0;padding:0 56px 28px 40px;font-size:15px;line-height:1.75;color:#55585C;max-width:820px}
+.faq .all{display:inline-block;margin-top:32px;font-size:15px;font-weight:700;border-bottom:1px solid var(--text)}
+
+/* CTA */
+.cta{background:var(--sky);color:#fff;padding:130px 0;text-align:center}
+.cta h2{font-size:64px}
+.cta p{font-size:18px;color:rgba(255,255,255,.86);margin:22px 0 32px;line-height:1.7}
+.cta .prep{display:flex;justify-content:center;gap:10px;margin-bottom:40px;flex-wrap:wrap}
+.cta .prep span{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:rgba(27,33,41,.3);font-size:14px}
+.cta .prep b{color:var(--yellow);font-weight:700}
+.cta .ctas{display:flex;justify-content:center;gap:12px}
+
+/* 푸터 */
+.foot{background:var(--white);padding:72px 0 48px}
+.foot .row{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+.foot h5{margin:0 0 14px;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:500}
+.foot p{margin:14px 0 0;font-size:14px;line-height:1.9;color:var(--muted)}
+.foot ul{list-style:none;margin:0;padding:0;font-size:15px;line-height:2.1}
+.foot .legal{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.foot .legal b{color:var(--text)}
+.ph-tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:999px;background:var(--cream);color:#6B5A1E;margin-left:6px;vertical-align:2px}
+
+/* ===== 모바일 (768px 이하) ===== */
+@media (max-width:768px){
+  :root{--gutter:20px;--sec-pad:72px}
+  h2{font-size:32px}
+  .sec-head{grid-template-columns:1fr;gap:16px}
+  .sec-head .num{margin-top:0}
+  .sec-head p{grid-column:1;font-size:15px;margin-top:4px}
+  .indent{margin-left:0}
+  .bar{height:60px;padding:0 20px;grid-template-columns:1fr auto}
+  .bar nav,.bar .r{display:none}
+  .bar .logo{font-size:21px}
+  .menu-btn{display:flex;align-items:center;gap:10px}
+  .menu-btn .burger{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+  .menu-btn .burger i{width:16px;height:1.5px;background:var(--text)}
+  .hero{padding-top:56px}
+  .hero .eyebrow{font-size:13px}
+  .hero h1{font-size:40px;margin:22px 0 16px}
+  .hero .lead{font-size:15px;margin-bottom:28px;padding:0 20px}
+  .hero .ctas{flex-direction:column;padding:0 20px}
+  .hero .chips{margin-top:36px;padding:0 20px;gap:8px}
+  .hero .chips span{font-size:13px;padding:8px 13px}
+  .hero .ridge{height:80px;margin-top:40px}
+  .hero .intro{grid-template-columns:1fr;gap:14px;padding:36px 0 72px}
+  .hero .intro h3{font-size:24px}
+  .hero .intro p{font-size:15px}
+  .hero .scroll{display:none}
+  .svc .grid{grid-template-columns:1fr;gap:24px;margin-top:36px}
+  .svc ol{display:flex;overflow:hidden;gap:8px;border:0}
+  .svc li{height:40px;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:0 14px;font-size:14px;white-space:nowrap;flex:none}
+  .svc li small,.svc li .arrow{display:none}
+  .svc li.on{background:var(--yellow);border-color:var(--yellow);color:#1E1F21}
+  .svc .stage{min-height:0;padding:62% 12px 12px;border-radius:18px}
+  .svc .stage svg{height:60%}
+  .svc .card{position:relative;right:auto;bottom:auto;width:auto;padding:22px}
+  .svc .card h4{font-size:22px}
+  .why .cards,.pf .cards{grid-template-columns:1fr;gap:12px;margin-top:36px}
+  .why .c{min-height:0;gap:36px;padding:24px}
+  .why .c h4{font-size:22px}
+  .pf .top{flex-direction:column;align-items:flex-start}
+  .pf .more{display:none}
+  .pf .filter{margin-top:28px;overflow:hidden}
+  .pf .filter span{flex:none}
+  .pf .cards{margin-top:16px}
+  .proc ol{grid-template-columns:1fr;gap:0;margin-top:36px}
+  .proc li{display:grid;grid-template-columns:44px 1fr;padding:18px 0}
+  .proc li .n{grid-row:span 2;margin:0}
+  .proc li b{font-size:17px;margin-bottom:4px}
+  .proc .foot-note{margin-top:28px;font-size:13px}
+  .faq .list{margin-top:32px}
+  .faq summary{font-size:16px;padding:20px 0}
+  .faq summary .q{gap:12px}
+  .faq details p{padding:0 0 22px 26px;font-size:14px}
+  .cta{padding:80px 20px}
+  .cta h2{font-size:34px}
+  .cta p{font-size:15px}
+  .cta .ctas{flex-direction:column}
+  .foot{padding:48px 0 32px}
+  .foot .row{grid-template-columns:1fr;gap:28px}
+  .foot .legal{flex-direction:column;gap:8px;margin-top:36px}
+  .mo-cta{position:fixed;left:16px;right:16px;bottom:16px;z-index:5;display:flex;gap:8px}
+  .mo-cta .pill{flex:1;height:52px;box-shadow:0 10px 24px rgba(0,0,0,.2)}
+  .mo-cta .tel{flex:0 0 52px;padding:0;background:var(--charcoal);color:#fff}
+}
+@media (min-width:769px){.mo-cta{display:none}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <nav><a class="cur" href="#">회사소개</a><a href="#">서비스</a><a href="#">포트폴리오</a></nav>
+  <a class="logo" href="#">Aerial Studio.</a>
+  <div class="r"><a href="#">문의</a><a class="pill sm y" href="#">촬영 문의하기</a></div>
+  <div class="menu-btn"><span class="burger"><i></i><i></i><i></i></span></div>
+</header>
+
+<section class="hero">
+  <div class="in">
+    <span class="eyebrow"><i class="dot"></i>드론 항공 촬영 · 행사·공연 영상</span>
+    <h1>하늘에서 본 공간을,<br>한 장면으로.</h1>
+    <p class="lead">건축물과 기업 시설은 하늘에서, 행사와 공연은 무대 앞에서.<br>목적에 맞는 높이와 동선으로 촬영합니다.</p>
+    <div class="ctas"><a class="pill y" href="#">촬영 문의하기 →</a><a class="pill ghost-w" href="#">서비스 보기</a></div>
+    <div class="chips">
+      <span><svg viewBox="0 0 24 24"><path d="M4 21V9l8-5 8 5v12M9 21v-6h6v6"/></svg>건축물·부동산</span>
+      <span><svg viewBox="0 0 24 24"><path d="M3 21V11l5 3V11l5 3V7h8v14z"/></svg>기업·산업시설</span>
+      <span><svg viewBox="0 0 24 24"><path d="M4 20h16M6 20V9l6-4 6 4v11M9 13h6"/></svg>행사·공연 영상</span>
+      <span><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M10 9.5l5 2.5-5 2.5z"/></svg>편집·후반 작업</span>
+    </div>
+  </div>
+  <svg class="ridge" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 96 L120 70 L230 88 L360 46 L470 74 L590 52 L720 84 L860 38 L990 70 L1110 50 L1240 80 L1340 60 L1440 72 V140 H0Z" fill="rgba(27,33,41,.22)"/>
+    <path d="M0 118 L160 98 L300 112 L440 90 L610 110 L760 94 L920 116 L1080 96 L1250 112 L1440 100 V140 H0Z" fill="rgba(27,33,41,.35)"/>
+  </svg>
+  <div class="in">
+    <div class="intro">
+      <h3>왜 하늘에서<br>찍을까요?</h3>
+      <p>지상에서는 한 번에 담을 수 없는 건물의 규모, 주변 환경, 현장의 동선을 한 장면으로 보여 줄 수 있기 때문입니다. 촬영 목적을 먼저 듣고, 그에 맞는 높이와 동선을 정합니다.</p>
+    </div>
+  </div>
+  <span class="scroll">SCROLL ↓</span>
+</section>
+
+<section class="svc on-dark">
+  <div class="in">
+    <div class="sec-head"><div class="num">01</div><h2>목적에 맞는 높이에서<br>촬영합니다.</h2><p>분야를 고르면 결과물과 용도를 바로 확인할 수 있습니다.</p></div>
+    <div class="grid indent">
+      <ol>
+        <li><span><small>01</small>드론 항공 영상</span><span class="arrow">→</span></li>
+        <li><span><small>02</small>항공 사진</span><span class="arrow">→</span></li>
+        <li><span><small>03</small>건축물·부동산</span><span class="arrow">→</span></li>
+        <li><span><small>04</small>기업·산업시설</span><span class="arrow">→</span></li>
+        <li class="on"><span><small>05</small>행사·공연 영상</span><span class="arrow">→</span></li>
+        <li><span><small>06</small>편집·후반 작업</span><span class="arrow">→</span></li>
+      </ol>
+      <div>
+        <div class="stage">
+          <svg viewBox="0 0 800 250" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 150 L80 150 L80 90 L140 90 L140 120 L220 120 L220 40 L300 40 L300 110 L380 110 L380 70 L470 70 L470 130 L560 130 L560 60 L630 60 L630 120 L720 120 L720 95 L800 95 V250 H0Z" fill="rgba(27,33,41,.45)"/>
+            <path d="M0 200 Q200 170 400 195 T800 185 V250 H0Z" fill="rgba(27,33,41,.55)"/>
+          </svg>
+          <span class="ph"><i class="dot"></i>촬영 예시 영상 자리 (확보 후 교체)</span>
+          <div class="card">
+            <small>SERVICE 05</small>
+            <h4>행사·공연 영상</h4>
+            <p class="d">지상 카메라로 무대와 현장을 기록하고, 필요하면 드론으로 행사장 전경을 더합니다.</p>
+            <dl>
+              <div><dt>결과물</dt><dd>하이라이트, 전체 기록 영상</dd></div>
+              <div><dt>용도</dt><dd>공연 기록, 행사 스케치</dd></div>
+              <div><dt>포인트</dt><dd>지상 + 항공 함께 촬영</dd></div>
+            </dl>
+            <a class="link" href="#">서비스 자세히 보기 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="in">
+    <div class="sec-head"><div class="num">02</div><h2>비행보다 먼저,<br>장면을 설계합니다.</h2></div>
+    <div class="cards indent">
+      <div class="c"><div class="top"><span class="tag">PLAN</span><svg viewBox="0 0 40 40"><path d="M6 32 L16 22 L22 26 L34 10"/><path d="M27 10h7v7"/></svg></div><div><h4>목적에서 출발하는 기획</h4><p>영상이 쓰일 곳과 보여 줄 대상을 먼저 확인하고, 그에 맞는 고도와 동선을 정합니다.</p></div></div>
+      <div class="c"><div class="top"><span class="tag">SAFETY</span><svg viewBox="0 0 40 40"><path d="M20 5 L33 10 V20 C33 28 27 33 20 35 C13 33 7 28 7 20 V10Z"/><path d="M14 20 l4 4 8-8"/></svg></div><div><h4>비행 승인 사전 확인</h4><p>촬영 지역의 비행 제한 여부와 필요한 승인을 촬영 전에 확인하고 안내합니다.</p></div></div>
+      <div class="c hi"><div class="top"><span class="tag">DELIVER</span><svg viewBox="0 0 40 40"><rect x="6" y="10" width="28" height="20" rx="3"/><path d="M17 16 l7 4 -7 4z"/></svg></div><div><h4>촬영부터 편집까지</h4><p>촬영 원본과 편집본을 쓰실 곳에 맞는 형식으로 정리해 전달합니다.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="pf">
+  <div class="in wrap">
+    <div class="top"><div class="sec-head" style="flex:1"><div class="num" style="background:var(--charcoal);color:#fff">03</div><h2>하늘과 현장에서 기록한 장면</h2></div><a class="more" href="#">포트폴리오 전체 보기 →</a></div>
+    <div class="indent">
+      <div class="filter"><span class="cur">전체</span><span>건축·부동산</span><span>기업·산업시설</span><span>행사·공연</span></div>
+      <div class="cards">
+        <div><div class="thumb"><svg viewBox="0 0 400 120" preserveAspectRatio="none"><path d="M0 80 L60 60 L120 75 L200 35 L270 65 L340 45 L400 60 V120 H0Z" fill="rgba(27,33,41,.4)"/></svg><span class="ph">YouTube 썸네일 자리</span><span class="play">▶</span><span class="len">0:00</span></div><div class="meta"><small>건축·부동산</small><b>[프로젝트명]</b></div></div>
+        <div><div class="thumb"><svg viewBox="0 0 400 120" preserveAspectRatio="none"><path d="M0 120 V70 H50 V40 H90 V80 H150 V30 H210 V75 H260 V55 H320 V85 H400 V120Z" fill="rgba(27,33,41,.4)"/></svg><span class="ph">YouTube 썸네일 자리</span><span class="play">▶</span><span class="len">0:00</span></div><div class="meta"><small>기업·산업시설</small><b>[프로젝트명]</b></div></div>
+        <div><div class="thumb"><svg viewBox="0 0 400 120" preserveAspectRatio="none"><path d="M0 120 V88 H400 V120Z M60 88 V70 h8 v18 M150 88 V62 h10 v26 M240 88 V66 h9 v22 M330 88 V72 h8 v16" fill="rgba(27,33,41,.45)"/><path d="M120 0 L90 88 H150Z M280 0 L250 88 H310Z" fill="rgba(255,255,255,.10)"/></svg><span class="ph">YouTube 썸네일 자리</span><span class="play">▶</span><span class="len">0:00</span></div><div class="meta"><small>행사·공연</small><b>[프로젝트명]</b></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proc on-dark">
+  <div class="in">
+    <div class="sec-head"><div class="num">04</div><h2>문의부터 전달까지 6단계</h2></div>
+    <ol class="indent">
+      <li class="on"><span class="n">1</span><b>문의 접수</b><p>문의 폼이나 전화로 촬영 목적과 장소를 알려 주세요.</p></li>
+      <li><span class="n">2</span><b>상담·촬영 조건 검토</b><p>보내 주신 사진과 지도로 촬영 가능 여부를 검토합니다.</p></li>
+      <li><span class="n">3</span><b>견적·일정 협의</b><p>촬영 범위에 맞춰 견적과 일정을 정합니다.</p></li>
+      <li><span class="n">4</span><b>비행 승인 확인</b><p>드론 촬영이 있으면 비행 제한 여부와 필요한 승인을 확인합니다.</p></li>
+      <li><span class="n">5</span><b>현장 촬영</b><p>날씨와 현장 상황을 확인한 뒤 촬영합니다.</p></li>
+      <li><span class="n">6</span><b>편집·결과물 전달</b><p>계약 범위에 따라 편집 후 전달합니다.</p></li>
+    </ol>
+    <div class="foot-note indent"><i class="dot"></i>사전 현장 답사가 필요한 촬영은 계약 후 별도로 협의합니다.</div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="in">
+    <div class="sec-head"><div class="num">05</div><h2>자주 묻는 질문</h2></div>
+    <div class="list indent">
+      <details open><summary><span class="q"><i>Q</i>어느 지역까지 촬영이 가능한가요?</span><span class="pm">−</span></summary><p>[활동 지역 입력] 지역을 중심으로 촬영합니다. 그 밖의 지역은 이동 거리에 따라 출장비가 추가될 수 있으니 문의해 주세요.</p></details>
+      <details><summary><span class="q"><i>Q</i>비행 승인은 누가 받나요?</span><span class="pm">+</span></summary></details>
+      <details><summary><span class="q"><i>Q</i>드론 없이 행사·공연만 촬영할 수도 있나요?</span><span class="pm">+</span></summary></details>
+      <details><summary><span class="q"><i>Q</i>결과물은 언제, 어떤 형식으로 받나요?</span><span class="pm">+</span></summary></details>
+    </div>
+    <a class="all indent" href="#">질문 전체 보기 →</a>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>촬영 계획이 있으신가요?</h2>
+  <p>아래 세 가지만 알려 주시면<br>촬영 가능 여부와 진행 방법을 안내해 드립니다.</p>
+  <div class="prep"><span><b>1</b>촬영 목적</span><span><b>2</b>장소</span><span><b>3</b>희망 일정</span></div>
+  <div class="ctas"><a class="pill y" href="#">촬영 문의하기 →</a><a class="pill ghost-w" href="#">☎ 010-0000-0000</a></div>
+</section>
+
+<footer class="foot">
+  <div class="in">
+    <div class="row">
+      <div><div class="logo">Aerial Studio.</div><p>드론 항공 촬영 · 행사·공연 영상</p></div>
+      <div><h5>메뉴</h5><ul><li>회사소개</li><li>서비스</li><li>포트폴리오</li><li>문의</li></ul></div>
+      <div><h5>연락처</h5><ul><li>010-0000-0000</li><li>hello@example.com</li></ul></div>
+    </div>
+    <p>상호 AERIAL STUDIO<span class="ph-tag">가칭</span> · 대표 [대표자명] · 사업자등록번호 [000-00-00000] · [사업장 주소]</p>
+    <div class="legal"><b>개인정보처리방침</b><span>© 2026 Aerial Studio. All rights reserved.</span></div>
+  </div>
+</footer>
+
+<div class="mo-cta"><a class="pill tel" href="#" aria-label="전화하기">☎</a><a class="pill y" href="#">촬영 문의하기</a></div>
+
+</body>
+</html>

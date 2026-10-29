@@ -1,0 +1,15 @@
+---
+// 섹션 제목 줄입니다. 번호, 제목(슬롯), 설명(lead)을 같은 모양으로 맞춥니다.
+interface Props {
+  num: string;
+  lead?: string;
+}
+
+const { num, lead } = Astro.props;
+---
+
+<div class="sec-head">
+  <div class="num">{num}</div>
+  <h2><slot /></h2>
+  {lead && <p>{lead}</p>}
+</div>

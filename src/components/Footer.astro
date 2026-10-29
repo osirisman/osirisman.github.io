@@ -1,0 +1,44 @@
+---
+// 하단 정보입니다. 회사 정보는 src/data/site.ts에서 가져옵니다.
+import { site } from '../data/site';
+
+interface Props {
+  showPortfolio: boolean;
+}
+
+const { showPortfolio } = Astro.props;
+---
+
+<footer class="foot">
+  <div class="in">
+    <div class="row">
+      <div>
+        <div class="logo">{site.brandName}.</div>
+        <p>{site.tagline}</p>
+      </div>
+      <div>
+        <h5>메뉴</h5>
+        <ul>
+          <li><a href="#about">회사소개</a></li>
+          <li><a href="#services">서비스</a></li>
+          {showPortfolio && <li><a href="#portfolio">포트폴리오</a></li>}
+          <li><a href="#contact">문의</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>연락처</h5>
+        <ul>
+          <li><a href={`tel:${site.phone}`}>{site.phone}</a></li>
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        </ul>
+      </div>
+    </div>
+    <p>
+      상호 {site.companyName}<span class="ph-tag">{site.companyNameNote}</span> · 대표 {site.ceo} · 사업자등록번호 {site.businessNumber} · {site.address}
+    </p>
+    <div class="legal">
+      <a href="#privacy"><b>개인정보처리방침</b></a>
+      <span>© 2026 {site.brandName}. All rights reserved.</span>
+    </div>
+  </div>
+</footer>

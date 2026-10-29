@@ -1,0 +1,9 @@
+/* ===== 디자인 토큰: 색과 글꼴은 여기서만 바꿉니다 ===== */
+:root{
+  --yellow:#EBCD62; --yellow-bar:#F1CA55; --cream:#FBF3D5;
+  --sky:linear-gradient(100deg,#CEB6A1 0%,#B5AFA8 14%,#6F848D 38%,#2A3B48 66%,#1B2129 100%);
+  --sky-v:linear-gradient(170deg,#CEB6A1 0%,#B5AFA8 20%,#6F848D 48%,#2A3B48 78%,#1B2129 100%);
+  --charcoal:#292B31; --paper:#F8F7F2; --text:#27292A; --muted:#6B6E73; --line:#E4E1D8; --white:#FFFFFF;
+  --serif:'Noto Serif KR',serif; --sans:'Noto Sans KR',sans-serif;
+  --gutter:24px; --sec-pad:120px;
+}

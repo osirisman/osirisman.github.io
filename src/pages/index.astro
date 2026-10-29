@@ -1,0 +1,273 @@
+---
+// 메인 페이지입니다. 디자인 파일(design/메인페이지-최종안.html)과 같은 순서와 문구로 만들었습니다.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { site } from '../data/site';
+import { services } from '../data/services';
+import { portfolio, MIN_PORTFOLIO_COUNT, SHOW_PORTFOLIO_PLACEHOLDER } from '../data/portfolio';
+import { faq } from '../data/faq';
+
+// 포트폴리오 영상이 3개 미만이면 메뉴와 포트폴리오 섹션을 숨깁니다.
+// 단, 디자인 확인용 자리표시자 카드(SHOW_PORTFOLIO_PLACEHOLDER)를 켜 두었으면 섹션을 보여 줍니다.
+const showPortfolio = portfolio.length >= MIN_PORTFOLIO_COUNT || SHOW_PORTFOLIO_PLACEHOLDER;
+
+const portfolioFilters = ['전체', '건축·부동산', '기업·산업시설', '행사·공연'];
+const placeholderVideos = [
+  {
+    category: '건축·부동산',
+    art: '<path d="M0 80 L60 60 L120 75 L200 35 L270 65 L340 45 L400 60 V120 H0Z" fill="rgba(27,33,41,.4)"/>',
+  },
+  {
+    category: '기업·산업시설',
+    art: '<path d="M0 120 V70 H50 V40 H90 V80 H150 V30 H210 V75 H260 V55 H320 V85 H400 V120Z" fill="rgba(27,33,41,.4)"/>',
+  },
+  {
+    category: '행사·공연',
+    art: '<path d="M0 120 V88 H400 V120Z M60 88 V70 h8 v18 M150 88 V62 h10 v26 M240 88 V66 h9 v22 M330 88 V72 h8 v16" fill="rgba(27,33,41,.45)"/><path d="M120 0 L90 88 H150Z M280 0 L250 88 H310Z" fill="rgba(255,255,255,.10)"/>',
+  },
+];
+
+// 서비스 목록에서 처음 선택되어 있는 항목 (디자인 기준: 05 행사·공연 영상)
+const defaultService = services.findIndex((s) => s.title === '행사·공연 영상');
+
+const pad = (n: number) => String(n).padStart(2, '0');
+const mailHref = `mailto:${site.email}`;
+const telHref = `tel:${site.phone}`;
+
+const reasons = [
+  {
+    tag: 'PLAN',
+    title: '목적에서 출발하는 기획',
+    text: '영상이 쓰일 곳과 보여 줄 대상을 먼저 확인하고, 그에 맞는 고도와 동선을 정합니다.',
+    hi: false,
+  },
+  {
+    tag: 'SAFETY',
+    title: '비행 승인 사전 확인',
+    text: '촬영 지역의 비행 제한 여부와 필요한 승인을 촬영 전에 확인하고 안내합니다.',
+    hi: false,
+  },
+  {
+    tag: 'DELIVER',
+    title: '촬영부터 편집까지',
+    text: '촬영 원본과 편집본을 쓰실 곳에 맞는 형식으로 정리해 전달합니다.',
+    hi: true,
+  },
+];
+
+const steps = [
+  { title: '문의 접수', text: '문의 폼이나 전화로 촬영 목적과 장소를 알려 주세요.' },
+  { title: '상담·촬영 조건 검토', text: '보내 주신 사진과 지도로 촬영 가능 여부를 검토합니다.' },
+  { title: '견적·일정 협의', text: '촬영 범위에 맞춰 견적과 일정을 정합니다.' },
+  { title: '비행 승인 확인', text: '드론 촬영이 있으면 비행 제한 여부와 필요한 승인을 확인합니다.' },
+  { title: '현장 촬영', text: '날씨와 현장 상황을 확인한 뒤 촬영합니다.' },
+  { title: '편집·결과물 전달', text: '계약 범위에 따라 편집 후 전달합니다.' },
+];
+---
+
+<Base title={`${site.brandName} | 드론 항공 촬영`}>
+  <Header slot="header" showPortfolio={showPortfolio} />
+
+  <main>
+    <section class="hero" id="about">
+      <div class="in">
+        <span class="eyebrow"><i class="dot"></i>드론 항공 촬영 · 행사·공연 영상</span>
+        <h1>하늘에서 본 공간을,<br />한 장면으로.</h1>
+        <p class="lead">건축물과 기업 시설은 하늘에서, 행사와 공연은 무대 앞에서.<br />목적에 맞는 높이와 동선으로 촬영합니다.</p>
+        <div class="ctas">
+          <a class="pill y" href={mailHref}>촬영 문의하기 →</a>
+          <a class="pill ghost-w" href="#services">서비스 보기</a>
+        </div>
+        <div class="chips">
+          <span><svg viewBox="0 0 24 24"><path d="M4 21V9l8-5 8 5v12M9 21v-6h6v6" /></svg>건축물·부동산</span>
+          <span><svg viewBox="0 0 24 24"><path d="M3 21V11l5 3V11l5 3V7h8v14z" /></svg>기업·산업시설</span>
+          <span><svg viewBox="0 0 24 24"><path d="M4 20h16M6 20V9l6-4 6 4v11M9 13h6" /></svg>행사·공연 영상</span>
+          <span><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" /><path d="M10 9.5l5 2.5-5 2.5z" /></svg>편집·후반 작업</span>
+        </div>
+      </div>
+      <svg class="ridge" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 96 L120 70 L230 88 L360 46 L470 74 L590 52 L720 84 L860 38 L990 70 L1110 50 L1240 80 L1340 60 L1440 72 V140 H0Z" fill="rgba(27,33,41,.22)" />
+        <path d="M0 118 L160 98 L300 112 L440 90 L610 110 L760 94 L920 116 L1080 96 L1250 112 L1440 100 V140 H0Z" fill="rgba(27,33,41,.35)" />
+      </svg>
+      <div class="in">
+        <div class="intro">
+          <h3>왜 하늘에서<br />찍을까요?</h3>
+          <p>지상에서는 한 번에 담을 수 없는 건물의 규모, 주변 환경, 현장의 동선을 한 장면으로 보여 줄 수 있기 때문입니다. 촬영 목적을 먼저 듣고, 그에 맞는 높이와 동선을 정합니다.</p>
+        </div>
+      </div>
+      <span class="scroll">SCROLL ↓</span>
+    </section>
+
+    <section class="svc on-dark" id="services" data-svc-section data-default={defaultService}>
+      <div class="in">
+        <SectionHead num="01" lead="분야를 고르면 결과물과 용도를 바로 확인할 수 있습니다.">
+          목적에 맞는 높이에서<br />촬영합니다.
+        </SectionHead>
+        <div class="grid indent">
+          <ol>
+            {
+              services.map((service, i) => (
+                <li class:list={[{ on: i === defaultService }]}>
+                  <button
+                    class="svc-tab"
+                    type="button"
+                    data-svc-tab
+                    aria-pressed={i === defaultService ? 'true' : 'false'}
+                  >
+                    <span><small>{pad(i + 1)}</small>{service.title}</span>
+                    <span class="arrow">→</span>
+                  </button>
+                </li>
+              ))
+            }
+          </ol>
+          <div>
+            {
+              services.map((service, i) => (
+                <div class="stage" data-svc-panel>
+                  <svg viewBox="0 0 800 250" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0 150 L80 150 L80 90 L140 90 L140 120 L220 120 L220 40 L300 40 L300 110 L380 110 L380 70 L470 70 L470 130 L560 130 L560 60 L630 60 L630 120 L720 120 L720 95 L800 95 V250 H0Z" fill="rgba(27,33,41,.45)" />
+                    <path d="M0 200 Q200 170 400 195 T800 185 V250 H0Z" fill="rgba(27,33,41,.55)" />
+                  </svg>
+                  <span class="ph"><i class="dot"></i>촬영 예시 영상 자리 (확보 후 교체)</span>
+                  <div class="card">
+                    <small>SERVICE {pad(i + 1)}</small>
+                    <h4>{service.title}</h4>
+                    <p class="d">{service.description}</p>
+                    <dl>
+                      <div><dt>결과물</dt><dd>{service.deliverable}</dd></div>
+                      <div><dt>용도</dt><dd>{service.usage}</dd></div>
+                      <div><dt>포인트</dt><dd>{service.point}</dd></div>
+                    </dl>
+                    <a class="link" href="#contact">서비스 자세히 보기 →</a>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="why">
+      <div class="in">
+        <SectionHead num="02">비행보다 먼저,<br />장면을 설계합니다.</SectionHead>
+        <div class="cards indent">
+          {
+            reasons.map((reason) => (
+              <div class:list={['c', { hi: reason.hi }]}>
+                <div class="top">
+                  <span class="tag">{reason.tag}</span>
+                  <svg viewBox="0 0 40 40" aria-hidden="true">
+                    {reason.tag === 'PLAN' && <><path d="M6 32 L16 22 L22 26 L34 10" /><path d="M27 10h7v7" /></>}
+                    {reason.tag === 'SAFETY' && <><path d="M20 5 L33 10 V20 C33 28 27 33 20 35 C13 33 7 28 7 20 V10Z" /><path d="M14 20 l4 4 8-8" /></>}
+                    {reason.tag === 'DELIVER' && <><rect x="6" y="10" width="28" height="20" rx="3" /><path d="M17 16 l7 4 -7 4z" /></>}
+                  </svg>
+                </div>
+                <div>
+                  <h4>{reason.title}</h4>
+                  <p>{reason.text}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {showPortfolio && (
+      <section class="pf" id="portfolio">
+        <div class="in wrap">
+          <div class="top">
+            <SectionHead num="03">하늘과 현장에서 기록한 장면</SectionHead>
+            <a class="more" href="#portfolio">포트폴리오 전체 보기 →</a>
+          </div>
+          <div class="indent">
+            <div class="filter">
+              {portfolioFilters.map((filter, i) => <span class:list={[{ cur: i === 0 }]}>{filter}</span>)}
+            </div>
+            <div class="cards">
+              {
+                placeholderVideos.map((video) => (
+                  <div>
+                    <div class="thumb">
+                      <svg viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true" set:html={video.art} />
+                      <span class="ph">YouTube 썸네일 자리</span>
+                      <span class="play">▶</span>
+                      <span class="len">0:00</span>
+                    </div>
+                    <div class="meta">
+                      <small>{video.category}</small>
+                      <b>[프로젝트명]</b>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="proc on-dark">
+      <div class="in">
+        <SectionHead num="04">문의부터 전달까지 6단계</SectionHead>
+        <ol class="indent">
+          {
+            steps.map((step, i) => (
+              <li class:list={[{ on: i === 0 }]}>
+                <span class="n">{i + 1}</span>
+                <b>{step.title}</b>
+                <p>{step.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="foot-note indent"><i class="dot"></i>사전 현장 답사가 필요한 촬영은 계약 후 별도로 협의합니다.</div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq">
+      <div class="in">
+        <SectionHead num="05">자주 묻는 질문</SectionHead>
+        <div class="list indent">
+          {
+            faq.map((item, i) => (
+              <details open={i === 0}>
+                <summary>
+                  <span class="q"><i>Q</i>{item.question}</span>
+                  <span class="pm">{i === 0 ? '−' : '+'}</span>
+                </summary>
+                <p>{item.answer}</p>
+              </details>
+            ))
+          }
+        </div>
+        <a class="all indent" href="#faq">질문 전체 보기 →</a>
+      </div>
+    </section>
+
+    <section class="cta" id="contact">
+      <h2>촬영 계획이 있으신가요?</h2>
+      <p>아래 세 가지만 알려 주시면<br />촬영 가능 여부와 진행 방법을 안내해 드립니다.</p>
+      <div class="prep">
+        <span><b>1</b>촬영 목적</span>
+        <span><b>2</b>장소</span>
+        <span><b>3</b>희망 일정</span>
+      </div>
+      <div class="ctas">
+        <a class="pill y" href={mailHref}>촬영 문의하기 →</a>
+        <a class="pill ghost-w" href={telHref}>☎ {site.phone}</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer slot="footer" showPortfolio={showPortfolio} />
+
+  <div class="mo-cta">
+    <a class="pill tel" href={telHref} aria-label="전화하기">☎</a>
+    <a class="pill y" href={mailHref}>촬영 문의하기</a>
+  </div>
+</Base>
