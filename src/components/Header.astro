@@ -1,6 +1,7 @@
 ---
 // 상단 메뉴입니다. 포트폴리오 메뉴는 영상이 충분할 때만 보입니다.
 import { site } from '../data/site';
+import { url } from '../utils/url';
 interface Props {
   showPortfolio: boolean;
 }
@@ -9,14 +10,14 @@ const { showPortfolio } = Astro.props;
 
 // 최상단 메뉴에는 포트폴리오를 두지 않습니다. 모바일 메뉴에만 포트폴리오가 보입니다.
 const navLinks = [
-  { label: '회사소개', href: '/#about' },
-  { label: '서비스', href: '/#services' },
+  { label: '회사소개', href: url('/#about') },
+  { label: '서비스', href: url('/#services') },
 ];
 const mobileLinks = [
   ...navLinks,
-  ...(showPortfolio ? [{ label: '포트폴리오', href: '/#portfolio' }] : []),
+  ...(showPortfolio ? [{ label: '포트폴리오', href: url('/#portfolio') }] : []),
 ];
-const contactHref = '/contact';
+const contactHref = url('/contact/');
 ---
 
 <header class="site-head">

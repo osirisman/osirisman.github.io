@@ -1,6 +1,7 @@
 ---
 // 1:1 촬영 문의 폼입니다. /contact 페이지와 홈의 레이어 창(ContactDialog)에서 같이 씁니다.
 import { site } from '../data/site';
+import { url } from '../utils/url';
 
 // 촬영 종류 칩입니다. value는 홈의 칩 링크(data-type)와 맞춥니다.
 const shootTypes = [
@@ -98,7 +99,7 @@ const shootTypes = [
         <li>목적: 촬영 문의 접수, 상담 답변, 촬영 조건 안내</li>
         <li>보관 기간: [보관 기간 확정 필요]</li>
       </ul>
-      <p>자세한 내용은 <a href="/privacy">개인정보처리방침</a>에서 확인할 수 있습니다.</p>
+      <p>자세한 내용은 <a href={url('/privacy/')}>개인정보처리방침</a>에서 확인할 수 있습니다.</p>
     </details>
     <p class="err" id="err-privacy_consent" hidden></p>
   </div>
