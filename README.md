@@ -1,1 +1,0 @@
-# osirisman.github.io

@@ -69,14 +69,18 @@ public/                파비콘, 이미지
 
 - 저장소 이름이 `아이디.github.io`이면 `astro.config.mjs`에 `site: 'https://아이디.github.io'`만 설정합니다.
 - 저장소 이름이 다르면 `base: '/저장소이름'`도 설정하고, 내부 링크와 이미지 경로가 base를 따르도록 합니다.
-- 배포는 `.github/workflows/deploy.yml`(Astro 공식 `withastro/action`)로 하고, 저장소 Settings → Pages → Source는 "GitHub Actions"입니다.
+- 배포는 `.github/workflows/deploy.yml`로 하고, 저장소 Settings → Pages → Source는 "GitHub Actions"입니다. 이 워크플로는 목록 페이지와 드론 빌드를 합쳐서 올립니다.
 - 비밀키, 비밀번호, API 토큰은 절대 저장소에 넣지 않습니다(공개 저장소).
 
-## 저장소 분리 규칙
+## 저장소 구조 (하나의 저장소, 사이트는 폴더로 나눔)
 
-- 각 사이트는 독립 저장소입니다. 드론 사이트는 `drone` 저장소이고, `osirisman.github.io`는 목록 페이지(`index.html`)만 둡니다.
-- 사이트끼리 파일을 공유하지 않습니다. 다른 사이트의 CSS, JS, 이미지, 폰트를 가져다 쓰지 않습니다.
-- 내부 링크는 `src/utils/url.ts`의 `url()` 함수로 감싸서 base(`/drone`)를 붙입니다. 하위 페이지에서 경로가 틀어지는 상대경로(`../`)는 쓰지 않습니다.
+- 저장소 `osirisman.github.io` 하나에 사이트 두 개가 들어 있습니다.
+  - 루트(`index.html`, `hub.css`): 목록 페이지. `osirisman.github.io`에서 열립니다.
+  - `drone/`: 드론 홈페이지 Astro 프로젝트. `osirisman.github.io/drone/`에서 열립니다. 이 CLAUDE.md의 "폴더 구조"와 "디자인", "콘텐츠" 규칙은 `drone/` 안의 파일에 적용합니다.
+- 사이트끼리 파일을 공유하지 않습니다. 목록 페이지는 드론의 CSS, JS를 가져다 쓰지 않고, 드론 페이지는 루트의 `hub.css`를 쓰지 않습니다.
+- 드론 페이지 내부 링크는 `drone/src/utils/url.ts`의 `url()` 함수로 감싸서 base(`/drone`)를 붙입니다. 하위 페이지에서 경로가 틀어지는 상대경로(`../`)는 쓰지 않습니다.
+- 목록 페이지에 사이트를 추가할 때는 루트 `index.html`에 항목을 한 줄 추가합니다.
+- 배포는 `.github/workflows/deploy.yml` 하나가 두 사이트를 합쳐서 합니다. `drone/` 폴더의 소스 파일은 배포되지 않고, 빌드 결과(`drone/dist`)만 `/drone/`에 올라갑니다.
 - 외부 자원은 허용된 곳(Google Fonts, Web3Forms, YouTube)만 씁니다.
 - 새 내부 링크를 추가할 때는 `href="/..."`를 직접 쓰지 말고 `url('/...')`로 씁니다.
 

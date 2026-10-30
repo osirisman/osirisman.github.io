@@ -1,0 +1,86 @@
+/* 목록 페이지(osirisman.github.io) 전용 스타일입니다. 드론 사이트 스타일과 섞이지 않습니다. */
+:root {
+  --hub-bg: #f7f7f5;
+  --hub-text: #1b2129;
+  --hub-muted: #5b6370;
+  --hub-line: #d9dbe0;
+  --hub-focus: #1b2129;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --hub-bg: #14181e;
+    --hub-text: #f1f2f4;
+    --hub-muted: #aab0bb;
+    --hub-line: #2e343d;
+    --hub-focus: #f1f2f4;
+  }
+}
+
+:root[data-theme="dark"] {
+  --hub-bg: #14181e;
+  --hub-text: #f1f2f4;
+  --hub-muted: #aab0bb;
+  --hub-line: #2e343d;
+  --hub-focus: #f1f2f4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--hub-bg);
+  color: var(--hub-text);
+  font-family: "Noto Sans KR", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+.hub {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 64px 16px;
+}
+
+.hub-title {
+  margin: 0 0 24px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.hub-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--hub-line);
+}
+
+.hub-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hub-line);
+  color: var(--hub-text);
+  text-decoration: none;
+}
+
+.hub-link:hover .hub-name {
+  text-decoration: underline;
+}
+
+.hub-link:focus-visible {
+  outline: 2px solid var(--hub-focus);
+  outline-offset: 4px;
+}
+
+.hub-name {
+  font-weight: 500;
+}
+
+.hub-path {
+  color: var(--hub-muted);
+  font-size: 0.875rem;
+}
