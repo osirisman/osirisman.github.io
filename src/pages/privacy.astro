@@ -1,0 +1,68 @@
+---
+// 개인정보처리방침 페이지입니다.
+// 확정 전 검토 필요: 아래 내용은 초안입니다. 보관 기간, 처리 위탁, 국외 이전, 책임자는 법률 검토 후 확정해야 합니다.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import { portfolio, MIN_PORTFOLIO_COUNT } from '../data/portfolio';
+
+const showPortfolio = portfolio.length >= MIN_PORTFOLIO_COUNT;
+---
+
+<Base title={`개인정보처리방침 | ${site.brandName}`} description="문의 접수 시 수집하는 개인정보의 항목, 목적, 보관 기간과 처리 위탁 내용을 안내합니다.">
+  <Header slot="header" showPortfolio={showPortfolio} />
+
+  <main>
+    <!-- 확정 전 검토 필요: 이 문서는 초안입니다. [대괄호] 항목은 확정 후 채우고, 법률 검토를 거친 뒤 공개합니다. -->
+    <section class="page-head">
+      <div class="in">
+        <span class="ph-tag">초안 · 확정 전 검토 필요</span>
+        <h1>개인정보처리방침</h1>
+        <p class="page-lead">{site.companyName}(이하 "회사")은 촬영 문의 과정에서 개인정보를 다음과 같이 처리합니다.</p>
+      </div>
+    </section>
+
+    <section class="form-wrap">
+      <div class="in prose">
+        <h2>1. 수집하는 개인정보 항목</h2>
+        <ul>
+          <li>필수: 이름, 휴대폰 번호, 촬영 종류, 촬영 장소, 문의 내용</li>
+          <li>선택: 희망 일정, 회사·기관명, 이메일 주소</li>
+        </ul>
+
+        <h2>2. 수집 및 이용 목적</h2>
+        <ul>
+          <li>촬영 문의 접수 및 상담 답변</li>
+          <li>촬영 가능 여부, 진행 방법, 견적·일정 협의를 위한 연락</li>
+        </ul>
+
+        <h2>3. 보유 및 이용 기간</h2>
+        <p>문의 처리가 끝난 뒤 [보관 기간 확정 필요] 동안 보관하고, 그 후 지체 없이 파기합니다.</p>
+
+        <h2>4. 개인정보 처리 위탁</h2>
+        <p>문의 내용을 이메일로 받아 보기 위해 아래 업체에 개인정보 처리를 위탁합니다.</p>
+        <ul>
+          <li>수탁업체: Web3Forms (문의 폼 데이터 전송 및 스팸 차단)</li>
+          <li>위탁 기간: [확정 필요]</li>
+          <li>국외 이전: [이전 국가, 이전 시기, 방법 확정 필요]</li>
+        </ul>
+
+        <h2>5. 정보주체의 권리</h2>
+        <p>개인정보의 열람, 정정, 삭제, 처리 정지는 아래 연락처로 요청할 수 있습니다.</p>
+        <ul>
+          <li>전화: <a href={`tel:${site.phone}`}>{site.phone}</a></li>
+          <li>이메일: <a href={`mailto:${site.email}`}>{site.email}</a></li>
+        </ul>
+
+        <h2>6. 개인정보 보호책임자</h2>
+        <p>대표 {site.ceo} · 개인정보 보호책임자 [성명·연락처 확정 필요]</p>
+
+        <h2>7. 시행일</h2>
+        <p>[시행일 확정 필요]</p>
+      </div>
+    </section>
+  </main>
+
+  <Footer slot="footer" showPortfolio={showPortfolio} />
+</Base>

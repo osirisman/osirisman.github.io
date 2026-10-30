@@ -1,7 +1,6 @@
 ---
 // 상단 메뉴입니다. 포트폴리오 메뉴는 영상이 충분할 때만 보입니다.
 import { site } from '../data/site';
-
 interface Props {
   showPortfolio: boolean;
 }
@@ -10,14 +9,14 @@ const { showPortfolio } = Astro.props;
 
 // 최상단 메뉴에는 포트폴리오를 두지 않습니다. 모바일 메뉴에만 포트폴리오가 보입니다.
 const navLinks = [
-  { label: '회사소개', href: '#about' },
-  { label: '서비스', href: '#services' },
+  { label: '회사소개', href: '/#about' },
+  { label: '서비스', href: '/#services' },
 ];
 const mobileLinks = [
   ...navLinks,
-  ...(showPortfolio ? [{ label: '포트폴리오', href: '#portfolio' }] : []),
+  ...(showPortfolio ? [{ label: '포트폴리오', href: '/#portfolio' }] : []),
 ];
-const mailHref = `mailto:${site.email}`;
+const contactHref = '/contact';
 ---
 
 <header class="site-head">
@@ -27,7 +26,7 @@ const mailHref = `mailto:${site.email}`;
     </nav>
     <a class="logo" href="#">{site.brandName}.</a>
     <div class="r">
-      <a class="pill sm y" href={mailHref}>촬영 문의하기</a>
+      <a class="pill sm y" href={contactHref} data-contact-open>촬영 문의하기</a>
     </div>
     <button class="menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="m-nav">
       <span class="burger"><i></i><i></i><i></i></span>
@@ -36,6 +35,6 @@ const mailHref = `mailto:${site.email}`;
 
   <nav class="m-nav" id="m-nav" aria-label="모바일 메뉴">
     {mobileLinks.map((link) => <a href={link.href}>{link.label}</a>)}
-    <a class="pill y" href={mailHref}>촬영 문의하기</a>
+    <a class="pill y" href={contactHref} data-contact-open>촬영 문의하기</a>
   </nav>
 </header>

@@ -1,0 +1,123 @@
+---
+// 1:1 촬영 문의 폼입니다. /contact 페이지와 홈의 레이어 창(ContactDialog)에서 같이 씁니다.
+import { site } from '../data/site';
+
+// 촬영 종류 칩입니다. value는 홈의 칩 링크(data-type)와 맞춥니다.
+const shootTypes = [
+  { value: 'drone', label: '드론 항공' },
+  { value: 'building', label: '건축·부동산' },
+  { value: 'corporate', label: '기업·산업시설' },
+  { value: 'tourism', label: '관광·자연' },
+  { value: 'event', label: '행사·공연' },
+  { value: 'other', label: '기타' },
+];
+---
+
+<form id="contact-form" class="form" action="https://api.web3forms.com/submit" method="POST">
+  <input type="hidden" name="access_key" value={site.web3formsAccessKey} />
+  <input type="hidden" name="subject" value="[촬영문의] 1:1 촬영 문의" />
+  <input type="hidden" name="from_name" value={`${site.brandName} 홈페이지`} />
+
+  <!-- 스팸 방지용 칸입니다. 사람은 보이지 않으므로 비워 둡니다. -->
+  <div hidden>
+    <label>확인용 <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <fieldset class="field" aria-describedby="err-shoot_type">
+    <legend>촬영 종류 <span class="req">필수</span><span class="hint">여러 개 선택할 수 있습니다</span></legend>
+    <div class="chips-select">
+      {
+        shootTypes.map((type) => (
+          <label class="chip">
+            <input type="checkbox" name="shoot_type" value={type.value} data-label={type.label} />
+            <span>{type.label}</span>
+          </label>
+        ))
+      }
+    </div>
+    <p class="err" id="err-shoot_type" hidden></p>
+  </fieldset>
+
+  <div class="field">
+    <span class="lbl">희망 일정 <span class="hint">선택</span></span>
+    <div class="date-row">
+      <label class="sr-only" for="f-date">희망 날짜</label>
+      <input id="f-date" class="input" name="date" type="date" />
+      <label class="chip">
+        <input type="checkbox" name="date_undecided" />
+        <span>미정</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="f-location">촬영 장소 <span class="req">필수</span></label>
+    <input id="f-location" class="input" name="location" type="text" maxlength="100" required aria-describedby="err-location" placeholder="예: 서울 강남구 ○○빌딩" />
+    <p class="err" id="err-location" hidden></p>
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="f-message">문의 내용 <span class="req">필수</span></label>
+    <textarea id="f-message" class="input" name="message" rows="6" maxlength="2000" required aria-describedby="err-message" placeholder="촬영 목적, 원하는 결과물(링크 등), 궁금한 점 등 자유롭게 적어 주세요"></textarea>
+    <p class="err" id="err-message" hidden></p>
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="f-name">이름 <span class="req">필수</span></label>
+    <input id="f-name" class="input" name="name" type="text" maxlength="50" autocomplete="name" required aria-describedby="err-name" />
+    <p class="err" id="err-name" hidden></p>
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="f-company">회사·기관명 <span class="hint">선택</span></label>
+    <input id="f-company" class="input" name="company" type="text" maxlength="100" autocomplete="organization" aria-describedby="err-company" />
+    <p class="err" id="err-company" hidden></p>
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="f-phone">휴대폰 <span class="req">필수</span></label>
+    <input id="f-phone" class="input" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="010-0000-0000" required aria-describedby="err-phone" />
+    <p class="err" id="err-phone" hidden></p>
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="f-email">이메일 <span class="hint">선택</span></label>
+    <input id="f-email" class="input" name="email" type="email" maxlength="254" autocomplete="email" placeholder="name@example.com" aria-describedby="err-email" />
+    <p class="err" id="err-email" hidden></p>
+  </div>
+
+  <div class="consent">
+    <label class="check">
+      <input id="f-privacy_consent" type="checkbox" name="privacy_consent" required aria-describedby="err-privacy_consent" />
+      <span>개인정보 수집·이용에 동의합니다 <span class="req">필수</span></span>
+    </label>
+    <details>
+      <summary>수집 항목·목적·보관 기간 보기</summary>
+      <ul>
+        <li>수집 항목: 촬영 종류, 희망 일정, 촬영 장소, 문의 내용, 이름, 휴대폰, 회사·기관명(선택), 이메일(선택)</li>
+        <li>목적: 촬영 문의 접수, 상담 답변, 촬영 조건 안내</li>
+        <li>보관 기간: [보관 기간 확정 필요]</li>
+      </ul>
+      <p>자세한 내용은 <a href="/privacy">개인정보처리방침</a>에서 확인할 수 있습니다.</p>
+    </details>
+    <p class="err" id="err-privacy_consent" hidden></p>
+  </div>
+
+  <div class="form-foot">
+    <div class="h-captcha" data-captcha="true"></div>
+    <p class="err" id="form-fail" role="alert" hidden>
+      전송에 실패했습니다. 입력하신 내용은 그대로 남아 있습니다. 다시 보내 주시거나 전화
+      <a href={`tel:${site.phone}`}>{site.phone}</a>로 문의해 주세요.
+    </p>
+    <button class="pill y submit" type="submit">촬영 문의 보내기</button>
+  </div>
+</form>
+
+<div id="form-done" class="done" role="status" tabindex="-1" hidden>
+  <h2>접수 완료</h2>
+  <p>문의가 접수되었습니다. 보내 주신 내용을 확인한 뒤 입력하신 연락처로 안내해 드리겠습니다.</p>
+  <p>급하신 경우 전화 <a href={`tel:${site.phone}`}>{site.phone}</a>로 연락해 주세요.</p>
+</div>
+
+<!-- Web3Forms 스팸 차단(hCaptcha) 스크립트입니다. Web3Forms 대시보드에서 hCaptcha를 켜야 동작합니다. -->
+<script is:inline src="https://web3forms.com/client/script.js" async defer></script>

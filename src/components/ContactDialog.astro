@@ -1,0 +1,13 @@
+---
+// 홈 화면 위에 뜨는 촬영 문의 창입니다. 여닫기는 src/scripts/contact-dialog.ts가 맡습니다.
+import ContactForm from './ContactForm.astro';
+---
+
+<dialog id="contact-dialog" class="contact-dialog" aria-labelledby="contact-dialog-title">
+  <div class="dialog-card">
+    <button type="button" class="dialog-close" data-contact-close aria-label="창 닫기">×</button>
+    <h2 id="contact-dialog-title">1:1 촬영 문의</h2>
+    <p class="dialog-lead">촬영 목적, 장소, 희망 일정을 알려 주시면 촬영 가능 여부와 진행 방법을 빠른 시일 안에 안내해 드립니다.</p>
+    <ContactForm />
+  </div>
+</dialog>

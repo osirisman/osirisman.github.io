@@ -31,7 +31,7 @@ h2{font-family:var(--serif);font-weight:600;font-size:52px;line-height:1.2;lette
 .hero .lead{font-size:18px;line-height:1.7;color:rgba(255,255,255,.86);margin:0 0 40px}
 .hero .ctas{display:flex;justify-content:center;gap:12px}
 .hero .chips{display:flex;justify-content:center;gap:12px;margin-top:56px;flex-wrap:wrap}
-.hero .chips span{display:flex;align-items:center;gap:8px;font-size:14px;padding:9px 16px;border-radius:999px;background:rgba(27,33,41,.28);color:rgba(255,255,255,.92)}
+.hero .chips a{display:flex;align-items:center;gap:8px;font-size:14px;padding:9px 16px;border-radius:999px;background:rgba(27,33,41,.28);color:rgba(255,255,255,.92)}
 .hero .chips svg{width:16px;height:16px;stroke:var(--yellow);fill:none;stroke-width:1.8}
 .hero .ridge{display:block;width:100%;height:140px;margin-top:70px}
 .hero .intro{background:transparent;text-align:left;display:grid;grid-template-columns:1fr 520px;gap:40px;padding:56px 0 110px;border-top:1px dotted rgba(255,255,255,.35)}
@@ -158,7 +158,7 @@ h2{font-family:var(--serif);font-weight:600;font-size:52px;line-height:1.2;lette
   .hero .lead{font-size:15px;margin-bottom:28px;padding:0 20px}
   .hero .ctas{flex-direction:column;padding:0 20px}
   .hero .chips{margin-top:36px;padding:0 20px;gap:8px}
-  .hero .chips span{font-size:13px;padding:8px 13px}
+  .hero .chips a{font-size:13px;padding:8px 13px}
   .hero .ridge{height:80px;margin-top:40px}
   .hero .intro{grid-template-columns:1fr;gap:14px;padding:36px 0 72px}
   .hero .intro h3{font-size:24px}
