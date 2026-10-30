@@ -116,6 +116,8 @@ h2{font-family:var(--serif);font-weight:600;font-size:52px;line-height:1.2;lette
 .faq summary .q i{font-style:normal;font-family:var(--serif);font-weight:700;color:#B49A3C}
 .faq summary .pm{width:32px;height:32px;border-radius:50%;border:1px solid #CFCCC3;display:flex;align-items:center;justify-content:center;flex:none;font-size:16px}
 .faq details[open] .pm{background:var(--yellow);border-color:var(--yellow)}
+.faq summary .pm::before{content:'+'}
+.faq details[open] .pm::before{content:'\2212'}
 .faq details p{margin:-6px 0 0;padding:0 56px 28px 40px;font-size:15px;line-height:1.75;color:#55585C;max-width:820px}
 .faq .all{display:inline-block;margin-top:32px;font-size:15px;font-weight:700;border-bottom:1px solid var(--text)}
 

@@ -235,10 +235,10 @@ const steps = [
         <div class="list indent">
           {
             faq.map((item, i) => (
-              <details open={i === 0}>
+              <details name="faq">
                 <summary>
                   <span class="q"><i>Q</i>{item.question}</span>
-                  <span class="pm">{i === 0 ? '−' : '+'}</span>
+                  <span class="pm" aria-hidden="true"></span>
                 </summary>
                 <p>{item.answer}</p>
               </details>
